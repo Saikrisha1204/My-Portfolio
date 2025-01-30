@@ -175,9 +175,60 @@
       <p>&copy; 2025 Sai Krishna. All rights reserved.</p>
     </footer>
 
+     <!-- Resume Modal -->
+    <div id="resume-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <iframe src="Resume.pdf" style="width:100%; height:80vh;" frameborder="0"></iframe>
+      </div>
+    </div>
+
     <script>
+      // Highlight active nav link on scroll
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          if (pageYOffset >= sectionTop - sectionHeight / 3) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach((link) => {
+          link.classList.remove('active');
+          if (link.getAttribute('href').includes(current)) {
+            link.classList.add('active');
+          }
+        });
+      });
+
+      // Resume Modal
+      const modal = document.getElementById('resume-modal');
+      const btn = document.getElementById('view-resume-btn');
+      const closeBtn = document.querySelector('.close-btn');
+
+      btn.onclick = () => {
+        modal.style.display = 'block';
+      };
+
+      closeBtn.onclick = () => {
+        modal.style.display = 'none';
+      };
+
+      window.onclick = (event) => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      };
+
+      // Scroll animations
       document.addEventListener('DOMContentLoaded', () => {
         const sections = document.querySelectorAll('section');
+
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -186,8 +237,11 @@
               }
             });
           },
-          { threshold: 0.3 }
+          {
+            threshold: 0.3,
+          }
         );
+
         sections.forEach((section) => {
           observer.observe(section);
         });
